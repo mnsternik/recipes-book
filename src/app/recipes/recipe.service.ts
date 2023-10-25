@@ -2,11 +2,9 @@ import { Subject } from "rxjs";
 import { Recipe } from "./recipe.model";
 
 export class RecipceService {
-    private recipes: Recipe[] = [
-        new Recipe('Schabowe', 'Pyszny schabowy', 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/schabowe_01.jpg', [{amount: 2, name: 'Meat'}, {amount: 3, name: 'Corn'}]),
-        new Recipe('Sznycel', 'Pyszny sznycel', 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/schabowe_01.jpg', [{amount: 2, name: 'Meat'}, {amount: 3, name: 'Corn'}])
-    ];
 
+    private recipes: Recipe[] = [];
+    
     recipesChanged = new Subject<Recipe[]>; 
 
     getRecipes() {
@@ -15,6 +13,11 @@ export class RecipceService {
 
     getRecipe(index: number) {
         return structuredClone(this.recipes)[index];
+    }
+
+    setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes; 
+        this.recipesChanged.next(structuredClone(this.recipes));
     }
 
     addRecipe(recipe: Recipe) {
