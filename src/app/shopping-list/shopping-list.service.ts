@@ -47,7 +47,7 @@ export class ShoppingListService {
         this.ingredientChanged.next(structuredClone(this.ingredients));
     }
 
-    findIngredientIndex(ingredient: Ingredient): number {
+    private findIngredientIndex(ingredient: Ingredient): number {
         const ingredients = this.ingredients.map(ing => ing.name);
         return ingredients.indexOf(ingredient.name); 
     }
