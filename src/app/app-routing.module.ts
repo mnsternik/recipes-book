@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { ComponentFactoryResolver, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
@@ -10,21 +10,27 @@ import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component
 import { RecipesResolverService } from "./recipes/recipes-resolver.service";
 import { AuthComponent } from "./auth/auth.component";
 import { AuthGuard } from "./auth/auth-guard";
+import { RecipeListComponent } from "./recipes/recipe-list/recipe-list.component";
+import { FavoritesResolverService } from "./recipes/favorites/favorites-resolver.service";
+import { ShoppingListResolverService } from "./shopping-list/shopping-list-resolver.service";
+import { GuestGuard } from "./auth/guest-guard";
 
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/recipes',
+        redirectTo: '/recipes?mode=all',
         pathMatch: 'full'
     },
     {
         path: 'auth',
-        component: AuthComponent
+        component: AuthComponent,
+        canActivate: [GuestGuard]
     },
     {
         path: 'shopping-list',
         component: ShoppingListComponent,
         canActivate: [AuthGuard],
+        resolve: [ShoppingListResolverService],
         children: [
             {
                 path: 'edit',
@@ -35,8 +41,13 @@ const appRoutes: Routes = [
     {
         path: 'recipes',
         component: RecipesComponent,
-        canActivate: [AuthGuard],
+        resolve: [RecipesResolverService],
         children: [
+            {
+                path: '',
+                component: RecipeListComponent,
+                resolve: [FavoritesResolverService]
+            },
             {
                 path: '',
                 component: RecipeSelectInfoComponent,
@@ -44,16 +55,18 @@ const appRoutes: Routes = [
             },
             {
                 path: 'new',
-                component: RecipeEditComponent
+                component: RecipeEditComponent,
+                canActivate: [AuthGuard]
             },
             {
                 path: ':id',
                 component: RecipeDetailComponent,
-                resolve: [RecipesResolverService]
+                resolve: [RecipesResolverService, FavoritesResolverService, ShoppingListResolverService]
             },
             {
                 path: ':id/edit',
                 component: RecipeEditComponent,
+                canActivate: [AuthGuard],
                 resolve: [RecipesResolverService]
             }
         ]
