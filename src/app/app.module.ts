@@ -13,14 +13,16 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
-import { ShoppingListService } from './shopping-list/shopping-list.service';
+import { LocalShoppingListService } from './shopping-list/local-shopping-list.service';
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeSelectInfoComponent } from './recipes/recipe-select-info/recipe-select-info.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { RecipceService } from './recipes/recipe.service';
+import { LocalRecipceService } from './recipes/local-recipes.service';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { RecipeSearchFilterPipe } from './recipes/recipe-search-filter.pipe';
+import { TagComponent } from './tag/tag/tag.component';
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     RecipeSelectInfoComponent,
     RecipeEditComponent,
     AuthComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    RecipeSearchFilterPipe,
+    TagComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +50,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     ReactiveFormsModule,
     HttpClientModule, 
   ],
-  providers: [ShoppingListService, RecipceService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
+  providers: [LocalShoppingListService, LocalRecipceService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
