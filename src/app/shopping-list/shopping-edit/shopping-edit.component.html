@@ -1,39 +1,39 @@
 <div class="row">
-    <div class="col-xs-12">
-      <form (ngSubmit)="onAddIngredient()" #f="ngForm">
-        <div class="row">
-          <div class="col-sm-5 form-group">
-            <label for="name">Name</label>
-            <input 
-              class="form-control" 
-              type="text" 
-              id="name" 
-              ngModel
-              name="name"
-              required
-            >
-          </div>
-          <div class="col-sm-2 form-group">
-            <label for="amount">Amount</label>
-            <input 
-              class="form-control" 
-              type="number" 
-              id="amount" 
-              ngModel
-              name="amount"
-              required
-              pattern="^[1-9]+[0-9]*$"
-            >
-          </div>
+  <div class="col-xs-12">
+    <form (ngSubmit)="onAddIngredient()" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-5 form-group">
+          <label for="name">Name</label>
+          <input class="form-control" type="text" id="name" ngModel name="name" required>
         </div>
-        <div class="row">
-          <div class="col-xs-12" >
-            <button  class="btn btn-success" type="submit" [disabled]="f.invalid">{{ editMode ? "Update" : "Add" }}</button>
-            <button class="btn btn-danger" style="margin: 0 .25em" [disabled]="!editMode" (click)="onDeleteItem(editedItemIndex)">Delete</button>
-            <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="name">Unit</label>
+          <select class="form-control form-select" type="text" id="unit" ngModel name="unit" required>
+            <option value="kilogram(s)">kilograms</option>
+            <option value="gram(s)">grams</option>
+            <option value="liter(s)">liters</option>
+            <option value="mililiter(s)">mililiters</option>
+            <option value="piece(s)">pieces</option>
+          </select>
         </div>
-      </form>
-    </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 form-group">
+          <label for="amount">Amount</label>
+          <input class="form-control" type="number" id="amount" ngModel name="amount" required pattern="^[1-9]+[0-9]*$">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button class="btn btn-success" type="submit" [disabled]="f.invalid">{{ editMode ? "Update" : "Add"
+            }}</button>
+          <button class="btn btn-danger" style="margin: 0 .25em" [disabled]="!editMode"
+            (click)="onDeleteItem(editedItemIndex)">Delete</button>
+          <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
+        </div>
+      </div>
+    </form>
   </div>
-  
+</div>
