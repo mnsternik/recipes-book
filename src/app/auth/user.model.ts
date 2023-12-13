@@ -1,13 +1,9 @@
-import { Recipe } from "../recipes/recipe.model";
-
 export class User {
     constructor(
         public email: string,
         public id: string,
         private _token: string, 
-        private _tokenExpirationDate: Date,
-        public createdRecipes?: Recipe[], 
-        public favoritesRecipes?: Recipe[],
+        private _tokenExpirationDate: Date
     ) {}
 
     get token() {
