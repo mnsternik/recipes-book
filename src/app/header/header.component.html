@@ -11,8 +11,22 @@
                 <li routerLinkActive="active" *ngIf="!isAuthenticated">
                     <a routerLink="/auth">Authentication</a>
                 </li>    
+                <li class="dropdown" appDropdown>
+                    <a style="cursor: pointer" class="dropdown-toggle" role="button">Recipes <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li routerLinkActive="active">
+                            <a routerLink="/recipes" [queryParams]="{ mode: 'all'}">All Recipes</a>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="isAuthenticated">
+                            <a routerLink="/recipes" [queryParams]="{ mode: 'favorites'}">Favorites Recipes</a>
+                        </li>
+                        <li routerLinkActive="active" *ngIf="isAuthenticated">
+                            <a routerLink="/recipes" [queryParams]="{ mode: 'my'}">My Recipes</a>
+                        </li>
+                    </ul>
+                </li>
                 <li routerLinkActive="active" *ngIf="isAuthenticated">
-                    <a routerLink="/recipes">Recipes</a>
+                    <a routerLink="/recipes/new">New Recipe</a>
                 </li>
                 <li routerLinkActive="active" *ngIf="isAuthenticated">
                     <a routerLink="/shopping-list">Shopping List</a>
@@ -21,13 +35,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li *ngIf="isAuthenticated">
                     <a style="cursor: pointer" (click)="onLogout()">Logout</a>
-                </li>
-                <li class="dropdown" appDropdown *ngIf="isAuthenticated">
-                    <a style="cursor: pointer" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer" (click)="onSaveRecipes()">Save Data</a></li>
-                        <li><a style="cursor: pointer" (click)="onFetchRecipes()">Fetch Data</a></li>
-                    </ul>
                 </li>
             </ul>
         </div>
