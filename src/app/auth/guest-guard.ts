@@ -6,17 +6,17 @@ import { map, take } from "rxjs/operators";
 import { AuthService } from "./auth.service";
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class GuestGuard implements CanActivate {
     constructor(private authService: AuthService, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         return this.authService.user.pipe(
             take(1),
             map(user => {
-                if (!!user) {
-                    return true; 
-                } 
-                return this.router.createUrlTree(['/auth']);
+                if (user) {
+                    return this.router.createUrlTree(['/recipes']);
+                }
+                return true;
             }))
     }
 }
