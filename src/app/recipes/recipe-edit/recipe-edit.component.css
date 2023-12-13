@@ -1,3 +1,16 @@
 input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
     border: 1px solid red; 
 }
+
+.recipe-image {
+    max-height: 300px;
+}
+
+.tag-select-group {
+    display: flex; 
+}
+
+.tag-select-group-button {
+    height: 34px; 
+    margin: auto 4px; 
+}

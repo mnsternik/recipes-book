@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { RecipceService } from '../recipe.service';
+
+import { LocalRecipceService } from '../local-recipes.service';
+import { DataStorageRecipesService } from 'src/app/data-storage/ds-recipes.service';
+import { Recipe } from '../recipe.model';
 
 
 @Component({
@@ -10,23 +13,30 @@ import { RecipceService } from '../recipe.service';
   styleUrls: ['./recipe-edit.component.css']
 })
 export class RecipeEditComponent implements OnInit {
-  id: number;
+  id: string;
   editMode = false;
+  editedRecipe: Recipe;
   recipeForm: FormGroup;
+  tags: string[] = [];
 
   get ingControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
-  constructor(private route: ActivatedRoute,
-    private recipeService: RecipceService,
-    private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private localRecipeService: LocalRecipceService,
+    private dsRecipeService: DataStorageRecipesService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
-        this.id = +params['id'];
+        this.id = params['id'];
         this.editMode = params['id'] != null;
+        if (this.editMode) {
+          this.editedRecipe = this.localRecipeService.getRecipe(this.id);
+        }
         this.initForm();
       }
     )
@@ -34,57 +44,88 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit() {
     if (!this.editMode) {
-      this.recipeService.addRecipe(this.recipeForm.value);
-    } else {
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+      const newRecipe = { ...this.recipeForm.value, tags: this.tags };
+      this.dsRecipeService.addRecipe(newRecipe).subscribe((res: { name: string }) => {
+        this.router.navigate(['recipes', res.name])
+      })
     }
-    this.onCancel();
+    else {
+      const updatedRecipe = {
+        ...this.editedRecipe,
+        ...this.recipeForm.value,
+        tags: this.tags
+      }
+      this.dsRecipeService.updateRecipe(updatedRecipe).subscribe(() => {
+        this.router.navigate(['recipes', this.id])
+      });
+    }
   }
 
   onAddIngredient() {
     (<FormArray>this.recipeForm.get('ingredients')).push(
       new FormGroup({
         'name': new FormControl(null, Validators.required),
-        'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]),
+        'unit': new FormControl(null, Validators.required),
+        'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]\d*(\.\d{1,2})?$/)]),
       })
     )
   }
 
+  onAddTag() {
+    this.tags.push(this.recipeForm.get('tags').value);
+    this.recipeForm.get('tags').setValue('');
+  }
+
   onCancel() {
-    this.router.navigate(['../'], { relativeTo: this.route })
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onDeleteIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index); 
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
   }
 
   private initForm() {
     let name = '';
-    let imagePath = '';
     let description = '';
+    let imagePath = '';
+    let instructions = ''
+    let price = 0;
+    let preparationTime = 0;
+    let tags = [];
+    let calories = 0;
     let recipeIngredients = new FormArray([]);
 
     if (this.editMode) {
-      const recipe = this.recipeService.getRecipe(this.id);
-      name = recipe.name;
-      imagePath = recipe.imagePath;
-      description = recipe.description;
-      if (recipe['ingredients']) {
-        for (let ingredient of recipe['ingredients']) {
+      name = this.editedRecipe.name;
+      description = this.editedRecipe.description;
+      imagePath = this.editedRecipe.imagePath;
+      instructions = this.editedRecipe.instructions;
+      price = this.editedRecipe.price;
+      preparationTime = this.editedRecipe.preparationTime;
+      tags = this.editedRecipe.tags;
+      calories = this.editedRecipe.calories;
+      if (this.editedRecipe['ingredients']) {
+        for (let ingredient of this.editedRecipe['ingredients']) {
           recipeIngredients.push(
             new FormGroup({
               'name': new FormControl(ingredient.name, Validators.required),
-              'amount': new FormControl(ingredient.amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]),
+              'unit': new FormControl(ingredient.unit, Validators.required),
+              'amount': new FormControl(ingredient.amount, [Validators.required, Validators.pattern(/^[1-9]\d*(\.\d{1,2})?$/)]),
             })
           )
         }
       }
     }
-
+    
     this.recipeForm = new FormGroup({
       'name': new FormControl(name, Validators.required),
-      'imagePath': new FormControl(imagePath, Validators.required),
+      'imagePath': new FormControl(imagePath),
       'description': new FormControl(description, Validators.required),
+      'instructions': new FormControl(instructions),
+      'price': new FormControl(price),
+      'preparationTime': new FormControl(preparationTime),
+      'tags': new FormControl(tags),
+      'calories': new FormControl(calories),
       'ingredients': recipeIngredients
     })
   }
