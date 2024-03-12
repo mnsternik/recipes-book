@@ -39,7 +39,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
         switchMap((params: Params) => {
           this.id = params['id'];
           this.recipe = this.localRecipeService.getRecipe(this.id); 
-          this.isInFavorites = this.localFavoriteService.checkIfRecipeIsFavorite(this.id); 
+          this.isInFavorites = this.localFavoriteService.checkIfRecipeIsFavorite(this.id); // rename to isFavorite
           return this.localFavoriteService.favoritesChanged; 
         })
       ).subscribe(() => {

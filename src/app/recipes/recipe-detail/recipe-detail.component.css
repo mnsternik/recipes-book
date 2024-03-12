@@ -5,3 +5,28 @@
     color: rgb(72, 172, 26);
     font-weight: bold;
 }
+
+.title {
+    padding-left: 0;
+    margin-bottom: 12px;
+}
+
+.tags {
+    display: flex;
+    gap: 4px; 
+    flex-wrap: wrap;
+    margin-left: -4px;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 25px 0;
+}
+
+.img {
+    max-height: 350px; 
+    padding: 8px; 
+    margin: 0 auto;
+};
