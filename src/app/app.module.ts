@@ -22,7 +22,8 @@ import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { RecipeSearchFilterPipe } from './recipes/recipe-search-filter.pipe';
-import { TagComponent } from './tag/tag/tag.component';
+import { TagComponent } from './recipes/tag/tag.component';
+import { ShortenDirective } from './shared/shorten.directive';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { TagComponent } from './tag/tag/tag.component';
     AuthComponent,
     LoadingSpinnerComponent,
     RecipeSearchFilterPipe,
-    TagComponent
+    TagComponent,
+    ShortenDirective,
   ],
   imports: [
     BrowserModule,
