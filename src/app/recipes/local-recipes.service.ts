@@ -7,6 +7,20 @@ import { Recipe } from "./recipe.model";
 export class LocalRecipceService {
 
     private recipes: Recipe[] = [];
+    tagOptions = [
+        "Vegan",
+        "Spicy",
+        "Gluten-free",
+        "Low-carb",
+        "Mediterranean",
+        "Keto-friendly",
+        "Quick & Easy",
+        "Comfort Food",
+        "Paleo",
+        "Dairy-free",
+        "Asian-inspired",
+        "Family-friendly"
+    ];
     
     recipesChanged = new Subject<Recipe[]>; 
 
