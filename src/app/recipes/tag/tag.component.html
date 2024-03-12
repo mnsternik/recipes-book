@@ -1,0 +1,11 @@
+<span 
+    class="tag" 
+    (click)="onClick()" 
+    [class.selectable]="allowSelect && !isSelected"
+    [class.selected-tag]="isSelected"
+    [style.cursor]="allowSelect && 'pointer'"
+    [style.display]="hide ? 'none' : 'inline-block'"
+    >
+    {{ tagText }}
+</span>
+
