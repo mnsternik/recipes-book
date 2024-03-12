@@ -1,14 +1,19 @@
-<a 
-    [routerLink]="recipe.id" 
-    routerLinkActive="active"
-    style="cursor: pointer" 
-    class="list-group-item clearfix"
->
-    <div class="pull-left">
-        <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
-        <p class="list-group-item-text">{{ recipe.description }}</p>
+<a [routerLink]="recipe.id" routerLinkActive="active" style="cursor: pointer; padding: 0; border-radius: 12px" class="list-group-item clearfix">
+    <div class="recipe-card-container">
+        <span class="">
+            <img [src]="recipe.imagePath" alt="{{ recipe.name }}" class="img-responsive card-image">
+        </span>
+        <div class="recipe-card-text-content">
+            <div class="recipe-card-text">
+                <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+                <p class="list-group-item-text" appShorten>{{ recipe.description }}</p>
+            </div>
+            <div *ngIf="visiableTags" class="recipe-card-tags">
+                <app-tag *ngFor="let tag of visiableTags" [tagText]="tag"></app-tag>
+                <app-tag *ngIf="tagsAmountExceeded" tagText="..."></app-tag>
+            </div>
+            <span class="favorite-icon">
+            </span>
+        </div>
     </div>
-    <span class="pull-right">
-        <img [src]="recipe.imagePath" alt="{{ recipe.name }}" class="img-responsive" style="max-height: 50px;">
-    </span>
 </a>
