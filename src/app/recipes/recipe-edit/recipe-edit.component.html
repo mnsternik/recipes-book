@@ -8,10 +8,6 @@
                 </div>
             </div>
             <hr>
-            <div class="row" *ngIf="tags.length > 0">
-                <app-tag *ngFor="let tag of tags" [tagText]="tag" [allowDelete]="true"></app-tag>
-            </div>
-
             <div class="row">
                 <div class="col-xs-6">
                     <div class="form-group">
@@ -20,21 +16,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-xs-5">
-                    <div class="form-group">
-                        <label for="tags">Tags</label>
-                        <div class="tag-select-group">
-                            <select class="form-control" type="text" name="tags" formControlName="tags">
-                                <option>Vegan</option>
-                            </select>
-                            <button class="btn btn-primary" type="button" (click)="onAddTag()">Add</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-xs-3">
                     <div class="form-group">
@@ -94,6 +75,22 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="instructions">Tags</label>
+                        <div class="recipe-tags">
+                            <app-tag 
+                                *ngFor="let tag of tagsOptions" 
+                                [tagText]="tag" 
+                                [allowSelect]="true" 
+                                [isSelected]="selectedTags.includes(tag)"
+                                (click)="onTagClicked(tag)">
+                            </app-tag>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
                     <div class="row">
                         <div class="col-xs-4"><strong>Name</strong></div>
                         <div class="col-xs-3"><strong>Unit</strong></div>
@@ -127,7 +124,6 @@
                     </div>
                 </div>
             </div>
-
             <hr>
             <div class="row">
                 <div class="col-xs-12">

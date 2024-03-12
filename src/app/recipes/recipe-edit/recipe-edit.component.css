@@ -14,3 +14,9 @@ input.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched {
     height: 34px; 
     margin: auto 4px; 
 }
+
+.recipe-tags {
+    display: flex; 
+    gap: 4px; 
+    flex-wrap: wrap;
+}

@@ -17,7 +17,8 @@ export class RecipeEditComponent implements OnInit {
   editMode = false;
   editedRecipe: Recipe;
   recipeForm: FormGroup;
-  tags: string[] = [];
+  tagsOptions: string[] = []; 
+  selectedTags: string[] = [];
 
   get ingControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
@@ -36,15 +37,17 @@ export class RecipeEditComponent implements OnInit {
         this.editMode = params['id'] != null;
         if (this.editMode) {
           this.editedRecipe = this.localRecipeService.getRecipe(this.id);
+          this.selectedTags = this.editedRecipe.tags; 
         }
         this.initForm();
       }
     )
+    this.tagsOptions = this.localRecipeService.tagOptions.slice(); 
   }
 
   onSubmit() {
     if (!this.editMode) {
-      const newRecipe = { ...this.recipeForm.value, tags: this.tags };
+      const newRecipe = { ...this.recipeForm.value, tags: this.selectedTags };
       this.dsRecipeService.addRecipe(newRecipe).subscribe((res: { name: string }) => {
         this.router.navigate(['recipes', res.name])
       })
@@ -53,7 +56,7 @@ export class RecipeEditComponent implements OnInit {
       const updatedRecipe = {
         ...this.editedRecipe,
         ...this.recipeForm.value,
-        tags: this.tags
+        tags: this.selectedTags
       }
       this.dsRecipeService.updateRecipe(updatedRecipe).subscribe(() => {
         this.router.navigate(['recipes', this.id])
@@ -71,9 +74,13 @@ export class RecipeEditComponent implements OnInit {
     )
   }
 
-  onAddTag() {
-    this.tags.push(this.recipeForm.get('tags').value);
-    this.recipeForm.get('tags').setValue('');
+  onTagClicked(tag: string) {
+    if (this.selectedTags.includes(tag)) {
+      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
+    }
+    else {
+      this.selectedTags.push(tag); 
+    }
   }
 
   onCancel() {
@@ -85,25 +92,17 @@ export class RecipeEditComponent implements OnInit {
   }
 
   private initForm() {
-    let name = '';
-    let description = '';
-    let imagePath = '';
-    let instructions = ''
-    let price = 0;
-    let preparationTime = 0;
-    let tags = [];
-    let calories = 0;
-    let recipeIngredients = new FormArray([]);
+    const name = this.editMode ? this.editedRecipe.name : '';
+    const description = this.editMode ? this.editedRecipe.description : '';
+    const imagePath = this.editMode ? this.editedRecipe.imagePath : '';
+    const instructions = this.editMode ? this.editedRecipe.instructions : '';
+    const price = this.editMode ? this.editedRecipe.price : 0;
+    const preparationTime = this.editMode ? this.editedRecipe.preparationTime : 0;
+    const tags = this.editMode ? this.editedRecipe.tags : [];
+    const calories = this.editMode ? this.editedRecipe.calories : 0;
+    const recipeIngredients = new FormArray([]);
 
     if (this.editMode) {
-      name = this.editedRecipe.name;
-      description = this.editedRecipe.description;
-      imagePath = this.editedRecipe.imagePath;
-      instructions = this.editedRecipe.instructions;
-      price = this.editedRecipe.price;
-      preparationTime = this.editedRecipe.preparationTime;
-      tags = this.editedRecipe.tags;
-      calories = this.editedRecipe.calories;
       if (this.editedRecipe['ingredients']) {
         for (let ingredient of this.editedRecipe['ingredients']) {
           recipeIngredients.push(
@@ -116,7 +115,7 @@ export class RecipeEditComponent implements OnInit {
         }
       }
     }
-    
+
     this.recipeForm = new FormGroup({
       'name': new FormControl(name, Validators.required),
       'imagePath': new FormControl(imagePath),
