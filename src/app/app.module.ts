@@ -24,6 +24,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { RecipeSearchFilterPipe } from './recipes/recipe-search-filter.pipe';
 import { TagComponent } from './recipes/tag/tag.component';
 import { ShortenDirective } from './shared/shorten.directive';
+import { FooterComponent } from './footer/footer/footer.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { ShortenDirective } from './shared/shorten.directive';
     RecipeSearchFilterPipe,
     TagComponent,
     ShortenDirective,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

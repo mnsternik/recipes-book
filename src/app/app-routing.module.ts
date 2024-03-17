@@ -22,10 +22,15 @@ const appRoutes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'auth',
+        path: 'login',
         component: AuthComponent,
         canActivate: [GuestGuard]
     },
+    {
+        path: 'register',
+        component: AuthComponent,
+        canActivate: [GuestGuard]
+    },    
     {
         path: 'shopping-list',
         component: ShoppingListComponent,
