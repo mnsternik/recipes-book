@@ -28,8 +28,8 @@
             <div style="margin-top: 10px;">
                 <button class="btn btn-primary" type="submit" [disabled]="f.invalid">
                     {{ isLoginMode ? 'Login' : 'Sign Up'}}
-                </button> |
-                <button class="btn btn-primary " type="button" (click)="onSwitchMode()">
+                </button>
+                <button class="btn btn-link" type="button" (click)="onSwitchMode()">
                     {{ isLoginMode ? 'Switch to Sign Up' : 'Swtich to Login'}}
                 </button>
             </div>

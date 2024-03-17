@@ -1,26 +1,36 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { AuthResponseData, AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent {
-  constructor(private authService: AuthService, private router: Router) { }
+export class AuthComponent implements OnInit {
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   @ViewChild('f') authForm: NgForm;
 
-  isLoginMode = false;
+  isLoginMode: boolean; 
   isLoading = false;
   error: string = null;
 
+  ngOnInit(): void {
+    this.route.url.subscribe(url => {
+      this.isLoginMode = url[0].path === 'login'; 
+    })
+  }
+
   onSwitchMode() {
-    this.isLoginMode = !this.isLoginMode;
+    if (this.isLoginMode) {
+      this.router.navigate(['register']);
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   onLogin() {
@@ -47,6 +57,4 @@ export class AuthComponent {
     this.authForm.reset();
   }
 }
-
-//consider making seperate component for login and for singing up
 
