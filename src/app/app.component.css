@@ -1,7 +1,10 @@
 .layout {
-    min-height: 100%;
-    margin-bottom: -50px; /* Negative value of footer height */
-    padding-bottom: 50px; /* Equal to the height of the footer */
-    margin-top: -50px; /* Negative value of header height */
-    padding-top: 50px; /* Equal to the height of the header */
-}
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Ensure the footer is at the bottom */
+  .main {
+    flex: 1;
+  }
