@@ -1,0 +1,35 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 15px 0;
+    margin-top: 40px;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.footer-left {
+    display: flex; 
+    float: left;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 12px;
+    margin-right: 12px;
+    font-size: 19px;
+}
+
+.footer-left p {
+    padding-top: 2px; 
+    margin: auto 0; 
+}
